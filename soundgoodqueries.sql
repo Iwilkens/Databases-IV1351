@@ -38,16 +38,6 @@ CREATE MATERIALIZED VIEW ensemble_next_week AS
     WHERE EXTRACT(WEEK FROM time_slot)= 45 AND lesson_type = 'ensemble'
     ORDER BY target_genre;
 
-
-  SELECT to_char(time_slot, 'Day') AS day, target_genre, time_slot,
-        CASE
-            WHEN student_quota = 15 THEN 'No seats left'
-            WHEN student_quota = 14 THEN 'One seats left'
-            WHEN student_quota = 13 THEN 'Two seats left'
-            ELSE 'Many seats left'
-        END AS availability
-        FROM ensemble_nextweek;
-
 ---------- 5
 VACUUM ANALYZE;
 
