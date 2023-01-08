@@ -12,11 +12,14 @@ SELECT COUNT(lesson_id) AS lessons,
     GROUP BY EXTRACT(MONTH FROM time_slot);
 
 ---------- 2
-SELECT SUM(case when sibling_student_id is null then 1 else 0 end) students_without_siblings,
-count(sibling_student_id) number_of_siblings, sibling_student_id AS student_id
-FROM siblings
-LEFT JOIN student ON student.id = sibling_student_id
-GROUP BY sibling_student_id ORDER BY sibling_student_id;
+SELECT COUNT(student_id) number_of_students, number_of_siblings
+FROM (
+  SELECT sibling_student_id AS student_id, COUNT(*) number_of_siblings
+  FROM siblings
+  GROUP BY sibling_student_id
+) students_with_siblings
+GROUP BY number_of_siblings
+ORDER BY number_of_siblings;
 
 ---------- 3
 SELECT COUNT(instructor_id), instructor_id FROM lesson_booking
